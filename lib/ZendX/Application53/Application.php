@@ -12,7 +12,7 @@ class Application extends \Zend_Application
     /**
      * {@inheritdoc}
      *
-     * Overridden to add ZendX\Application53 namespace to autoloader
+     * Overridden to add ZendX namespace to autoloader
      *
      * @param string $environment
      * @param array $options
@@ -20,7 +20,7 @@ class Application extends \Zend_Application
     public function __construct($environment, $options = null)
     {
         require_once 'Zend/Loader/Autoloader.php';
-        \Zend_Loader_Autoloader::getInstance()->registerNamespace('ZendX\Application53');
+        \Zend_Loader_Autoloader::getInstance()->registerNamespace('ZendX');
         parent::__construct($environment, $options);
     }
 

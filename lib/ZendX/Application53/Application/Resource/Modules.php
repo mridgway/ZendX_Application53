@@ -23,11 +23,13 @@ class Modules extends \Zend_Application_Resource_Modules
         $modules = $front->getControllerDirectory();
         foreach ($modules as $module => $moduleDirectory) {
             $bootstrapClass = $module . '\\Bootstrap';
-
-            \Zend_Loader_Autoloader::getInstance()->registerNamespace($module);
-            $moduleBootstrap = new $bootstrapClass($bootstrap);
-            $moduleBootstrap->bootstrap();
-            $this->_bootstraps[$module] = $moduleBootstrap;
+            $bootstrapPath  = dirname($moduleDirectory) . '/Bootstrap.php';
+            if (file_exists($bootstrapPath)) {
+                \Zend_Loader_Autoloader::getInstance()->registerNamespace($module);
+                $moduleBootstrap = new $bootstrapClass($bootstrap);
+                $moduleBootstrap->bootstrap();
+                $this->_bootstraps[$module] = $moduleBootstrap;
+            }
         }
 
         return $this->_bootstraps;

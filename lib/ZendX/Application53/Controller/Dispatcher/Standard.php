@@ -59,16 +59,54 @@ class Standard extends \Zend_Controller_Dispatcher_Standard
     /**
      * {@inheritdoc}
      *
+     * @param Zend_Controller_Request_Abstract $action
+     * @return boolean
+     */
+    public function isDispatchable(\Zend_Controller_Request_Abstract $request)
+    {
+        $className = $this->getControllerClass($request);
+
+        if (!$className) {
+            return false;
+        }
+
+        $finalClass  = $this->getFullClass($className);
+
+        if (class_exists($finalClass, false)) {
+            return true;
+        }
+
+        $fileSpec    = $this->classToFilename($className);
+        $dispatchDir = $this->getDispatchDirectory();
+        $test        = $dispatchDir . DIRECTORY_SEPARATOR . $fileSpec;
+        return \Zend_Loader::isReadable($test);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $class
+     * @return string
+     */
+    public function classToFilename($class)
+    {
+        return str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @param string $unformatted
      * @return string
      */
     public function formatModuleName($unformatted)
     {
-        if (($this->_defaultModule == $unformatted) && !$this->getParam('prefixDefaultModule')) {
-            return $unformatted;
+        foreach($this->getControllerDirectory() AS $moduleName => $directory) {
+            if ($unformatted == strtolower($moduleName) || $unformatted == $moduleName) {
+                return $moduleName;
+            }
         }
-
-        return ucfirst($this->_formatName($unformatted));
+        return $this->_formatName($unformatted);
     }
 
     /**
@@ -80,18 +118,22 @@ class Standard extends \Zend_Controller_Dispatcher_Standard
      */
     public function loadClass($className)
     {
+        $fullClass = $this->getFullClass($className);
+
+        if (!class_exists($fullClass, true)) {
+            throw new \Zend_Controller_Dispatcher_Exception('Invalid controller class ("' . $fullClass . '")');
+        }
+
+        return $fullClass;
+    }
+
+    public function getFullClass($className)
+    {
         $fullClass = $this->_curModule . '\\';
         if ($this->getControllerNamespace()) {
             $fullClass .= $this->getControllerNamespace() . '\\';
         }
         $fullClass .= $className;
-
-        $dispatchDir = $this->getDispatchDirectory();
-        $loadFile    = $dispatchDir . DIRECTORY_SEPARATOR . $this->classToFilename($className);
-
-        if (!class_exists($fullClass, true)) {
-            throw new \Zend_Controller_Dispatcher_Exception('Invalid controller class ("' . $fullClass . '")');
-        }
 
         return $fullClass;
     }
@@ -116,5 +158,20 @@ class Standard extends \Zend_Controller_Dispatcher_Standard
     public function getControllerNamespace()
     {
         return $this->_controllerNamespace;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param  string $module Module name
+     * @return array|string Returns array of all directories by default, single
+     * module directory if module argument provided
+     */
+    public function getControllerDirectory($module = null)
+    {
+        if (null !== $module) {
+            $module = $this->formatModuleName($module);
+        }
+        return parent::getControllerDirectory($module);
     }
 }

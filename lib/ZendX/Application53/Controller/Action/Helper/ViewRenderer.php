@@ -22,4 +22,18 @@ class ViewRenderer extends \Zend_Controller_Action_Helper_ViewRenderer
     {
         return 'ViewRenderer';
     }
+
+    /**
+     * Get module directory
+     *
+     * @throws Zend_Controller_Action_Exception
+     * @return string
+     */
+    public function getModuleDirectory()
+    {
+        $module    = $this->getModule();
+        $moduleDir = $this->getFrontController()->getControllerDirectory($module);
+        $this->_moduleDir = dirname($moduleDir);
+        return $this->_moduleDir;
+    }
 }

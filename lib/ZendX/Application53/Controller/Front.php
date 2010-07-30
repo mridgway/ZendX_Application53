@@ -9,7 +9,7 @@ class Front extends \Zend_Controller_Front
 {
 
     /**
-     * Subdirectory within a module containing controllers; defaults to 'controllers'
+     * Subdirectory within a module containing controllers; defaults to 'Controller'
      * @var string
      */
     protected $_moduleControllerDirectoryName = 'Controller';
