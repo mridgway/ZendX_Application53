@@ -22,4 +22,23 @@ class View extends \Zend_Application_Resource_View
 
         return $view;
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return Zend_View
+     */
+    public function getView()
+    {
+        if (null === $this->_view) {
+            $options = $this->getOptions();
+            $this->_view = new \Zend_View($options);
+            $this->_view->addHelperPath(APPLICATION_PATH . '/../library/ZendX/Application53/View/Helper', 'ZendX_Application53_View_Helper');
+
+            if(isset($options['doctype'])) {
+                $this->_view->doctype()->setDoctype(strtoupper($options['doctype']));
+            }
+        }
+        return $this->_view;
+    }
 }
