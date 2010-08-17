@@ -17,8 +17,8 @@ class Modules extends \Zend_Application_Resource_Modules
     public function init()
     {
         $bootstrap = $this->getBootstrap();
-        $bootstrap->bootstrap('FrontController');
-        $front = $bootstrap->getResource('FrontController');
+        $bootstrap->bootstrap('Frontcontroller');
+        $front = $bootstrap->getResource('Frontcontroller');
 
         $modules = $front->getControllerDirectory();
         foreach ($modules as $module => $moduleDirectory) {
