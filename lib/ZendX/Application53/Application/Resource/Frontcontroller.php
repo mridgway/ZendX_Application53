@@ -5,7 +5,7 @@ namespace ZendX\Application53\Application\Resource;
 /**
  * {@inheritdoc}
  */
-class FrontController extends \Zend_Application_Resource_Frontcontroller
+class Frontcontroller extends \Zend_Application_Resource_Frontcontroller
 {
 
     /**
