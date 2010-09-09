@@ -9,7 +9,7 @@ ZendX_Application53 tries to make the process of setting up an application with 
 1. Add namespace to all of your project files. See the 'Namespacing' section for details.
 2. Change the directory structure to match what is shown in the 'Application Structure' section.
 3. In your index.php or wherever you instantiate Zend_Application, replace the `Zend_Application` with `\ZendX\Application53\Application` (make sure the require is correct as well). See [index.php](http://github.com/mridgway/ZendX_Application53/blob/master/sandbox/public/index.php#L43)
-4. Change your application bootstrap to extend \ZendX\Application53\Application\Bootstrap
+4. Change your application bootstrap to extend `\ZendX\Application53\Application\Bootstrap`
 5. Your application bootstrap should add 'Core' to the autoloader as in [Bootstrap.php](http://github.com/mridgway/ZendX_Application53/blob/master/sandbox/application/Bootstrap.php#L7). *Note: this is only necessary if your application bootstrap needs to load resources from your Core module.*
 
 
