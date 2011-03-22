@@ -21,22 +21,22 @@ class Action extends \Zend_Controller_Action
             return $this->view;
         }
         
-        if (isset($this->view) && ($this->view instanceof Zend_View_Interface)) {
+        if (isset($this->view) && ($this->view instanceof \Zend_View_Interface)) {
             return $this->view;
         }
 
         $request = $this->getRequest();
-        $module  = $request->getModuleName();
+        $module  = ucfirst($request->getModuleName());
         $dirs    = $this->getFrontController()->getControllerDirectory();
         if (empty($module) || !isset($dirs[$module])) {
             $module = $this->getFrontController()->getDispatcher()->getDefaultModule();
         }
         $baseDir = dirname($dirs[$module]) . DIRECTORY_SEPARATOR . 'View';
         if (!file_exists($baseDir) || !is_dir($baseDir)) {
-            throw new Zend_Controller_Exception('Missing base view directory ("' . $baseDir . '")');
+            throw new \Zend_Controller_Exception('Missing base view directory ("' . $baseDir . '")');
         }
         
-        $this->view = new Zend_View(array('basePath' => $baseDir));
+        $this->view = new \Zend_View(array('basePath' => $baseDir));
 
         return $this->view;
     }

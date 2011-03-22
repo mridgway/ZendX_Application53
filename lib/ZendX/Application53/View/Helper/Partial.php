@@ -35,13 +35,13 @@ class ZendX_Application53_View_Helper_Partial extends \Zend_View_Helper_Partial
             $view->partialCounter = $this->partialCounter;
         }
         if ((null !== $module) && is_string($module)) {
-            $moduleDir = Zend_Controller_Front::getInstance()->getControllerDirectory($module);
+            $moduleDir = \Zend_Controller_Front::getInstance()->getControllerDirectory($module);
             if (null === $moduleDir) {
-                $e = new Zend_View_Helper_Partial_Exception('Cannot render partial; module does not exist');
+                $e = new \Zend_View_Helper_Partial_Exception('Cannot render partial; module does not exist');
                 $e->setView($this->view);
                 throw $e;
             }
-            $viewsDir = dirname($moduleDir) . '/View';
+            $viewsDir = ucfirst(dirname($moduleDir)) . '/View';
             $view->addBasePath($viewsDir);
         } elseif ((null == $model) && (null !== $module)
             && (is_array($module) || is_object($module)))
